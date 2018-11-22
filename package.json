@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "private": false,
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "dev": "lerna run --scope=@reactify-tweets/web dev",
+    "build": "lerna run --scope=@reactify-tweets/web build"
+  },
   "devDependencies": {
     "lerna": "^3.4.3",
     "prettier": "^1.14.2"
