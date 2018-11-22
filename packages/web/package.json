@@ -1,5 +1,6 @@
 {
   "name": "@reactify-tweets/web",
+  "private": true,
   "version": "0.1.0",
   "dependencies": {
     "@material-ui/core": "^3.5.1",
