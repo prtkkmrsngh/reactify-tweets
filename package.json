@@ -8,7 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "lerna run --scope=@reactify-tweets/web dev",
+    "dev": "lerna run --parallel --scope={@reactify-tweets/server,@reactify-tweets/web} dev",
     "build": "lerna run --scope=@reactify-tweets/web build"
   },
   "devDependencies": {
