@@ -1,23 +1,26 @@
 {
-  "name": "@reactify-tweets/server",
+  "name": "sails-demo",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
-    "sails": "^1.1.0",
+    "@sailshq/connect-redis": "^3.2.1",
+    "@sailshq/lodash": "^3.10.3",
+    "@sailshq/socket.io-redis": "^5.2.0",
+    "dotenv": "^6.1.0",
     "grunt": "1.0.1",
+    "sails": "^1.1.0",
     "sails-hook-grunt": "^3.1.0",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
-    "@sailshq/connect-redis": "^3.2.1",
-    "@sailshq/socket.io-redis": "^5.2.0",
-    "@sailshq/lodash": "^3.10.3"
+    "twit": "^2.2.11"
   },
   "devDependencies": {
-    "@sailshq/eslint": "^4.19.3"
+    "nodemon": "^1.18.5"
   },
   "scripts": {
+    "dev": "export NODE_ENV=development && nodemon --ignore 'tmp/*' app.js && exit 0",
     "start": "NODE_ENV=production node app.js",
     "test": "npm run lint && npm run custom-tests && echo 'Done.'",
     "lint": "eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
@@ -26,7 +29,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jayswork/server.git"
+    "url": "git://github.com/jayswork/sails-demo.git"
   },
   "author": "jayswork",
   "license": "",
