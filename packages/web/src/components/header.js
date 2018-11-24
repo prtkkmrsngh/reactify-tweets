@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import InputBase from '@material-ui/core/InputBase'
@@ -7,6 +9,8 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 import { withStyles } from '@material-ui/core/styles'
 import SearchIcon from '@material-ui/icons/Search'
 import Grid from '@material-ui/core/Grid'
+
+import { requestApiData } from './../actions'
 
 const styles = theme => ({
   root: {
@@ -79,6 +83,19 @@ const styles = theme => ({
 })
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      inputValue: '',
+    }
+  }
+
+  updateInputValue(evt) {
+    this.setState({
+      inputValue: evt.target.value,
+    })
+  }
+
   render() {
     const { classes } = this.props
 
@@ -105,12 +122,19 @@ class Header extends React.Component {
                       root: classes.inputRoot,
                       input: classes.inputInput,
                     }}
+                    value={this.state.inputValue}
+                    onChange={evt => this.updateInputValue(evt)}
                   />
                 </div>
               </Grid>
               <Grid item>
                 <div className={classes.searchIconContainer}>
-                  <SearchIcon className={classes.searchIcon} />
+                  <SearchIcon
+                    className={classes.searchIcon}
+                    onClick={() =>
+                      this.props.requestApiData(this.state.inputValue)
+                    }
+                  />
                 </div>
               </Grid>
             </Grid>
@@ -125,4 +149,12 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(Header)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ requestApiData }, dispatch)
+
+const Head = withStyles(styles)(Header)
+
+export default connect(
+  () => ({}),
+  mapDispatchToProps
+)(Head)
