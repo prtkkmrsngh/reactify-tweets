@@ -59,6 +59,15 @@ const styles = {
   },
 }
 
+const getParam = (url, name) => {
+  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]')
+  var regexS = '[\\?&]' + name + '=([^&#]*)'
+  var regex = new RegExp(regexS)
+  var results = regex.exec(url)
+  if (results == null) return ''
+  else return results[1]
+}
+
 const TweetsPage = ({ classes, requestApiData, data }) => {
   return (
     <Layout title="Reactify Tweets">
@@ -66,7 +75,17 @@ const TweetsPage = ({ classes, requestApiData, data }) => {
         <div className={classes.tweets}>
           <Card className={classes.card} elevation={0}>
             <CardContent className={classes.cardContent}>
-              <div className={classes.seeNew} onClick={() => requestApiData()}>
+              <div
+                className={classes.seeNew}
+                onClick={() =>
+                  requestApiData(
+                    data.search_metadata.query,
+                    11,
+                    0,
+                    getParam(data.search_metadata.refresh_url, 'since_id')
+                  )
+                }
+              >
                 <Typography color="textSecondary" gutterBottom>
                   See new Tweets
                 </Typography>
@@ -123,12 +142,13 @@ const TweetsPage = ({ classes, requestApiData, data }) => {
             <CardContent className={classes.cardContent}>
               <div
                 className={classes.seeNew}
-                onClick={() =>
+                onClick={() => {
                   requestApiData(
                     data.search_metadata.query,
-                    data.search_metadata.max_id
+                    11,
+                    getParam(data.search_metadata.next_results, 'max_id')
                   )
-                }
+                }}
               >
                 <Typography color="textSecondary" gutterBottom>
                   Load More
@@ -144,7 +164,7 @@ const TweetsPage = ({ classes, requestApiData, data }) => {
   )
 }
 
-const mapStateToProps = state => ({ data: state.data })
+const mapStateToProps = state => ({ ...state.data })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ requestApiData }, dispatch)

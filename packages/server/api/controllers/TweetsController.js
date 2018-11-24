@@ -17,14 +17,17 @@ module.exports = {
     })
 
     if (req.query.q) {
-      const params = { q: req.query.q, count: 10 }
+      const params = {
+        q: req.query.q,
+        count: parseInt(req.query.count),
+        include_entities: 0,
+      }
 
       const maxID = parseInt(req.query.maxID)
       const sinceID = parseInt(req.query.sinceID)
 
       if (maxID && maxID !== 0) params.max_id = maxID
       if (sinceID && sinceID !== 0) params.since_id = sinceID
-      console.log(params)
 
       T.get('search/tweets', params, function(err, data, response) {
         return res.json(data)

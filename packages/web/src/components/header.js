@@ -90,9 +90,9 @@ class Header extends React.Component {
     }
   }
 
-  updateInputValue(evt) {
+  updateInputValue(value) {
     this.setState({
-      inputValue: evt.target.value,
+      inputValue: value,
     })
   }
 
@@ -123,7 +123,11 @@ class Header extends React.Component {
                       input: classes.inputInput,
                     }}
                     value={this.state.inputValue}
-                    onChange={evt => this.updateInputValue(evt)}
+                    onKeyPress={evt => {
+                      if (evt.key === 'Enter')
+                        this.props.requestApiData(this.state.inputValue)
+                    }}
+                    onChange={evt => this.updateInputValue(evt.target.value)}
                   />
                 </div>
               </Grid>

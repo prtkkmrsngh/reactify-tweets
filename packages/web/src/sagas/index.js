@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, select, takeLatest } from 'redux-saga/effects'
 
 import { REQUEST_API_DATA } from './../constants/actiontypes'
 import { receiveApiData } from './../actions'
@@ -14,6 +14,23 @@ function* getApiData(action) {
     result.data.statuses.sort((a, b) => {
       return new Date(b.created_at) - new Date(a.created_at)
     })
+
+    const getData = state => state.data
+    const prevData = yield select(getData)
+
+    if (action.payload.maxID !== 0) {
+      result.data.statuses.pop()
+      result.data.statuses = [
+        ...prevData.data.statuses,
+        ...result.data.statuses,
+      ]
+    } else if (action.payload.sinceID !== 0) {
+      result.data.statuses.shift()
+      result.data.statuses = [
+        ...result.data.statuses,
+        ...prevData.data.statuses,
+      ]
+    }
 
     yield put(receiveApiData(result.data))
   } catch (e) {
