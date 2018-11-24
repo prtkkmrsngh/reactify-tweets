@@ -1,4 +1,6 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import classNames from 'classnames'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -7,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 
 import withRoot from '../withRoot'
 import Layout from '../components/layout'
+import { requestApiData } from './../actions'
 
 const styles = {
   tweets: {
@@ -56,134 +59,99 @@ const styles = {
   },
 }
 
-const TweetsPage = ({ classes }) => (
-  <Layout title="Reactify Tweets">
-    <div className={classes.tweets}>
-      <Card className={classes.card} elevation={0}>
-        <CardContent className={classes.cardContent}>
-          <div className={classes.seeNew}>
-            <Typography color="textSecondary" gutterBottom>
-              See new Tweets
-            </Typography>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className={classes.card} elevation={0}>
-        <CardContent className={classes.cardContent}>
-          <div className={classes.cardContainer}>
-            <div className={classes.subCard1}>
-              <img
-                alt=""
-                className={classes.userImage}
-                src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
-                width="48"
-                height="48"
-              />
-            </div>
-            <div className={classes.subCard2}>
-              <div className={classes.subCard2Title}>
-                <Typography
-                  className={classNames(
-                    classes.userName,
-                    classes.subCard2TitleStyle
-                  )}
-                  gutterBottom
-                >
-                  Prateek Kumar Singh
-                </Typography>
-                <Typography
-                  className={classes.subCard2TitleStyle}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  @prtkkmrsngh
-                </Typography>
-                <Typography
-                  className={classes.subCard2TitleStyle}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  &middot;
-                </Typography>
-                <Typography
-                  className={classes.subCard2TitleStyle}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  2m
+const TweetsPage = ({ classes, requestApiData, data }) => {
+  return (
+    <Layout title="Reactify Tweets">
+      {data.statuses ? (
+        <div className={classes.tweets}>
+          <Card className={classes.card} elevation={0}>
+            <CardContent className={classes.cardContent}>
+              <div className={classes.seeNew} onClick={() => requestApiData()}>
+                <Typography color="textSecondary" gutterBottom>
+                  See new Tweets
                 </Typography>
               </div>
-              <div className={classes.subCard2Body}>
-                <Typography gutterBottom>
-                  Republicans and Democrats MUST come together, finally, with a
-                  major Border Security package, which will include funding for
-                  the Wall. After 40 years of talk, it is finally time for
-                  action. Fix the Border, for once and for all, NOW!
+            </CardContent>
+          </Card>
+          {data.statuses.map((s, i) => {
+            return (
+              <Card key={i} className={classes.card} elevation={0}>
+                <CardContent className={classes.cardContent}>
+                  <div className={classes.cardContainer}>
+                    <div className={classes.subCard1}>
+                      <img
+                        alt=""
+                        className={classes.userImage}
+                        src={
+                          s.user.profile_image_url
+                            ? s.user.profile_image_url
+                            : 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png'
+                        }
+                        width="48"
+                        height="48"
+                      />
+                    </div>
+                    <div className={classes.subCard2}>
+                      <div className={classes.subCard2Title}>
+                        <Typography
+                          className={classNames(
+                            classes.userName,
+                            classes.subCard2TitleStyle
+                          )}
+                          gutterBottom
+                        >
+                          {s.user.name}
+                        </Typography>
+                        <Typography
+                          className={classes.subCard2TitleStyle}
+                          color="textSecondary"
+                          gutterBottom
+                        >
+                          @{s.user.screen_name}
+                        </Typography>
+                      </div>
+                      <div className={classes.subCard2Body}>
+                        <Typography gutterBottom>{s.text}</Typography>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+          <Card className={classes.card} elevation={0}>
+            <CardContent className={classes.cardContent}>
+              <div
+                className={classes.seeNew}
+                onClick={() =>
+                  requestApiData(
+                    data.search_metadata.query,
+                    data.search_metadata.max_id
+                  )
+                }
+              >
+                <Typography color="textSecondary" gutterBottom>
+                  Load More
                 </Typography>
               </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className={classes.card} elevation={0}>
-        <CardContent className={classes.cardContent}>
-          <div className={classes.cardContainer}>
-            <div className={classes.subCard1}>
-              <img
-                alt=""
-                className={classes.userImage}
-                src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
-                width="48"
-                height="48"
-              />
-            </div>
-            <div className={classes.subCard2}>
-              <div className={classes.subCard2Title}>
-                <Typography
-                  className={classNames(
-                    classes.userName,
-                    classes.subCard2TitleStyle
-                  )}
-                  gutterBottom
-                >
-                  Prateek Kumar Singh
-                </Typography>
-                <Typography
-                  className={classes.subCard2TitleStyle}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  @prtkkmrsngh
-                </Typography>
-                <Typography
-                  className={classes.subCard2TitleStyle}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  &middot;
-                </Typography>
-                <Typography
-                  className={classes.subCard2TitleStyle}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  2m
-                </Typography>
-              </div>
-              <div className={classes.subCard2Body}>
-                <Typography gutterBottom>
-                  Republicans and Democrats MUST come together, finally, with a
-                  major Border Security package, which will include funding for
-                  the Wall. After 40 years of talk, it is finally time for
-                  action. Fix the Border, for once and for all, NOW!
-                </Typography>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  </Layout>
-)
+            </CardContent>
+          </Card>
+        </div>
+      ) : (
+        <div />
+      )}
+    </Layout>
+  )
+}
 
-export default withRoot(withStyles(styles)(TweetsPage))
+const mapStateToProps = state => ({ data: state.data })
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ requestApiData }, dispatch)
+
+const Tweets = withRoot(withStyles(styles)(TweetsPage))
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Tweets)
