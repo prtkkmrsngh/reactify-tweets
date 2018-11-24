@@ -1,5 +1,5 @@
 {
-  "name": "sails-demo",
+  "name": "@reactify-tweets/server",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
