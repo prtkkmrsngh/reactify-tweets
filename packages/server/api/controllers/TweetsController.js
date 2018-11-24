@@ -16,12 +16,21 @@ module.exports = {
       access_token_secret: process.env.ACCESS_TOKEN_SECRET,
     })
 
-    T.get('search/tweets', { q: 'banana since:2011-07-11', count: 2 }, function(
-      err,
-      data,
-      response
-    ) {
-      return res.json(data)
-    })
+    if (req.query.q) {
+      const params = { q: req.query.q, count: 10 }
+
+      const maxID = parseInt(req.query.maxID)
+      const sinceID = parseInt(req.query.sinceID)
+
+      if (maxID && maxID !== 0) params.max_id = maxID
+      if (sinceID && sinceID !== 0) params.since_id = sinceID
+      console.log(params)
+
+      T.get('search/tweets', params, function(err, data, response) {
+        return res.json(data)
+      })
+    } else {
+      return res.json({})
+    }
   },
 }
