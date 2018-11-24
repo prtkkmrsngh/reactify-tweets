@@ -2,7 +2,7 @@
 
 ## ENV setup
 
-Create .env in packages/server/
+Create .env in root of packages/server/
 
 ```sh
 CONSUMER_KEY=****
@@ -17,10 +17,15 @@ Create .env in root of web packages/web/
 REACT_APP_SERVER_URL=**URL-OF-SAILS-SERVER**
 ```
 
-## development
+## clone repository
 
 ```sh
 git clone https://github.com/prtkkmrsngh/reactify-tweets.git
+```
+
+## development
+
+```sh
 cd reactify-tweets
 yarn install
 yarn dev
@@ -29,6 +34,8 @@ yarn dev
 ## production
 
 ```sh
+cd reactify-tweets
+yarn install
 yarn build
 yarn start
 ```
