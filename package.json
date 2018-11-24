@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "dev": "lerna run --parallel --scope={@reactify-tweets/server,@reactify-tweets/web} dev",
-    "build": "lerna run --scope=@reactify-tweets/web build"
+    "build": "lerna run --scope=@reactify-tweets/web build",
+    "start": "lerna run --parallel --scope={@reactify-tweets/server,@reactify-tweets/web} start"
   },
   "devDependencies": {
     "lerna": "^3.4.3",
